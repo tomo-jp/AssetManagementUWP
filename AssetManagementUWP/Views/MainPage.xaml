@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="AssetManagementUWP.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:AssetManagementUWP.Helpers"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:views="using:AssetManagementUWP.Views"
+    Style="{StaticResource PageStyle}"
+    mc:Ignorable="d"
+    MinHeight="685">
+    
+    <Grid x:Name="ContentArea">
+        <winui:NavigationView x:Name="navigationView" IsBackButtonVisible="Collapsed"
+                              IsSettingsVisible="False" PaneDisplayMode="Top"
+                              Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+            <winui:NavigationView.MenuItems>
+                <winui:NavigationViewItem x:Uid="SimpleCalc" helpers:NavHelper.NavigateTo="views:SimpleCalcPage"/>
+                <winui:NavigationViewItem x:Uid="DetailCalc" helpers:NavHelper.NavigateTo="views:DetailCalcPage"/>
+            </winui:NavigationView.MenuItems>
+            <i:Interaction.Behaviors>
+                <ic:EventTriggerBehavior EventName="ItemInvoked">
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.ItemInvokedCommand}"/>
+                </ic:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+            <Grid>
+                <!--ScrollViewerのFocusが移動してしまうバグがあるため、IsTabStop="True"とし、UseSystemFocusVisuals="False"にする-->
+                <!--参考：https://github.com/microsoft/microsoft-ui-xaml/issues/597-->
+                <ScrollViewer x:Name="scrollViewer" IsTabStop="True" UseSystemFocusVisuals="False">
+                    <Frame x:Name="mainFrame" Margin="24,10,24,15" MaxWidth="800"/>
+                </ScrollViewer>
+            </Grid>
+        </winui:NavigationView>
+    </Grid>
+</Page>

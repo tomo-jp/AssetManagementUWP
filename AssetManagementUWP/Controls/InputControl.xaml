@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="AssetManagementUWP.Controls.InputControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="100">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="27"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="{x:Bind Path=ItemText}" Grid.Column="0"
+                   HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <winui:NumberBox x:Name="InputArea" Value="{x:Bind InputValue, Mode=TwoWay}" Grid.Column="1"
+                         HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Center"  VerticalContentAlignment="Center" 
+                         Margin="0,0,10,0" ValidationMode="InvalidInputOverwritten" SpinButtonPlacementMode="{x:Bind SpinButtonPlacementMode}" Minimum="0" BorderThickness="0.4">
+            <i:Interaction.Behaviors>
+                <ic:DataTriggerBehavior Binding="{x:Bind HasError, Mode=TwoWay}" Value="True">
+                    <ic:ChangePropertyAction TargetObject="{x:Bind InputArea}" PropertyName="BorderBrush" Value="Red"/>
+                </ic:DataTriggerBehavior>
+                <ic:DataTriggerBehavior Binding="{x:Bind HasError, Mode=TwoWay}" Value="False">
+                    <ic:ChangePropertyAction TargetObject="{x:Bind InputArea}" PropertyName="BorderBrush" Value="Gray" />
+                </ic:DataTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </winui:NumberBox>
+        <TextBlock Text="{x:Bind Path=UnitText}" Grid.Column="2"
+                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+    </Grid>
+</UserControl>

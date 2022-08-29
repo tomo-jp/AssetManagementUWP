@@ -1,0 +1,94 @@
+﻿<Page
+    x:Class="AssetManagementUWP.Views.SimpleCalcPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:AssetManagementUWP.Controls"
+    mc:Ignorable="d"
+    Background="White">
+    <Grid>
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style TargetType="local:InputControl">
+                    <Setter Property="Margin" Value="25,15,25,15"/>
+                </Style>
+                <Style TargetType="Rectangle">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="Fill" Value="Gray"/>
+                    <Setter Property="Height" Value="0.9"/>
+                </Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="BorderBrush" Value="Gray"/>
+                    <Setter Property="Orientation" Value="Vertical"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                </Style>
+            </StackPanel.Resources>
+            <TextBlock x:Uid="CurrentAndGoal" HorizontalAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <StackPanel BorderThickness="1">
+                <local:InputControl x:Uid="InputStartYearControl" x:Name="InputStartYearControl" Format="Year" SpinButtonPlacementMode="Compact"
+                                    InputValue="{x:Bind ViewModel.StartYear, Mode=TwoWay}" HasError="{x:Bind ViewModel.HasErrorGoalRetireYear, Mode=OneWay}"/>
+                <Rectangle/>
+                <local:InputControl x:Uid="InputStartAssetControl" x:Name="InputStartAssetControl" Format="Currency"
+                                    InputValue="{x:Bind ViewModel.StartAsset, Mode=TwoWay}"/>
+                <Rectangle/>
+                <local:InputControl x:Uid="InputGoalDividendControl" x:Name="InputGoalDividendControl" Format="Currency"
+                                    InputValue="{x:Bind ViewModel.GoalDividend, Mode=TwoWay}" HasError="{x:Bind ViewModel.HasErrorGoalDividend, Mode=OneWay}"/>
+                <Rectangle/>
+                <local:InputControl x:Uid="InputGoalRetireYearControl" x:Name="InputGoalRetireYearControl" Format="Year" SpinButtonPlacementMode="Compact"
+                                    InputValue="{x:Bind ViewModel.GoalRetireYear, Mode=TwoWay}" HasError="{x:Bind ViewModel.HasErrorGoalRetireYear, Mode=OneWay}"/>
+            </StackPanel>
+            <Pivot x:Name="Tabs" Margin="0,5,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <Pivot.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding}"/>
+                    </DataTemplate>
+                </Pivot.HeaderTemplate>
+                <PivotItem x:Uid="PivotItem">
+                    <StackPanel>
+                        <StackPanel BorderThickness="1">
+                            <local:InputControl x:Uid="InputExpectedDividendRateControl" x:Name="InputExpectedDividendRateControl" UnitText="%" Format="Percent"
+                                            InputValue="{x:Bind ViewModel.ExpectedDividendRate, Mode=TwoWay}" HasError="{x:Bind ViewModel.HasErrorExpectedDividendRate, Mode=OneWay}"/>
+                            <Rectangle/>
+                            <Button x:Uid="CalcButton" Name="CalcButton" Command="{x:Bind ViewModel.ButtonClickCommand}"
+                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Width="160" Height="50" Margin="0,15,0,15" Background="LightBlue"/>
+                        </StackPanel>
+                        <StackPanel x:Name="resultPanel" Visibility="{x:Bind ViewModel.ResultVisibility, Mode=OneWay}">
+                            <TextBlock x:Uid="Result" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" Margin="0,20,0,5"/>
+                            <StackPanel BorderThickness="1">
+                                <TextBlock x:Uid="RequiredAnnualSavings" Style="{StaticResource BodyTextBlockStyle}" HorizontalAlignment="Center" Margin="0,10,0,3"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource SubtitleTextBlockStyle}">
+                                            <Setter Property="FontWeight" Value="ExtraBold"/>
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <TextBlock Text="{x:Bind ViewModel.ResultValue, Mode=OneWay}"/>
+                                    <TextBlock x:Uid="ResultUnit"/>
+                                </StackPanel>
+                                <controls:DataGrid x:Name="ResultGrid" ItemsSource="{x:Bind ViewModel.GridData}"
+                                               AutoGenerateColumns="False" GridLinesVisibility="Horizontal" Margin="20,20,20,20"
+                                               HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                                    <controls:DataGrid.Columns>
+                                        <controls:DataGridTextColumn x:Uid="ColumnYear" Binding="{Binding Year}"/>
+                                        <controls:DataGridTextColumn x:Uid="ColumnTotalAsset" Binding="{Binding TotalAsset}"/>
+                                        <controls:DataGridTextColumn x:Uid="ColumnYearYield" Binding="{Binding Dividend}"/>
+                                    </controls:DataGrid.Columns>
+                                </controls:DataGrid>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </PivotItem>
+                <PivotItem x:Uid="RequiredYield">
+                    <StackPanel BorderBrush="Black" BorderThickness="2">
+                        <TextBlock x:Uid="UnderConstruction"/>
+                    </StackPanel>
+                </PivotItem>
+            </Pivot>
+            </StackPanel>
+    </Grid>
+</Page>
